@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Clients/" />
+  <Folder Name="/Clients/Blazor.Client/">
+    <Project Path="Clients/Blazor.Client/BlazorApp.csproj" />
+  </Folder>
+  <Folder Name="/MicroServices/" />
+  <Folder Name="/MicroServices/ProductCatalog/">
+    <Project Path="MicroServices/ProductCatalog/ProductCatalog.Api/ProductCatalog.Api.csproj" />
+    <Project Path="MicroServices/ProductCatalog/ProductCatalog.Domain/ProductCatalog.Domain.csproj" />
+    <Project Path="MicroServices/ProductCatalog/ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj" />
+  </Folder>
+</Solution>

@@ -9,4 +9,9 @@
     <Project Path="MicroServices/ProductCatalog/ProductCatalog.Domain/ProductCatalog.Domain.csproj" />
     <Project Path="MicroServices/ProductCatalog/ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/MicroServices/ShoppingCart/">
+    <Project Path="MicroServices/ShoppingCart/ShoppingCart.Api/ShoppingCart.Api.csproj" />
+    <Project Path="MicroServices/ShoppingCart/ShoppingCart.Domain/ShoppingCart.Domain.csproj" />
+    <Project Path="MicroServices/ShoppingCart/ShoppingCart.Infrastructure/ShoppingCart.Infrastructure.csproj" />
+  </Folder>
 </Solution>

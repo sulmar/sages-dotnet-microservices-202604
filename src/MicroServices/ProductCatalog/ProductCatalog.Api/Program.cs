@@ -10,7 +10,16 @@ builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
 builder.Services.AddSingleton<ProductCatalogContext>(sp => new ProductCatalogContext { Products = sp.GetRequiredService<Faker<Product>>().Generate(100) });
 
+builder.Services.AddCors(options => options.AddPolicy("ProductCatalogPolicy", policy=>
+{
+    policy.WithOrigins("https://localhost:7108");
+    policy.WithMethods("GET");
+    policy.AllowAnyHeader();
+}));
+
 var app = builder.Build();
+
+app.UseCors("ProductCatalogPolicy");
 
 app.MapGet("/", () => "Hello Product Catalog Api!");
 

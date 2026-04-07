@@ -13,7 +13,7 @@ public class ProductFaker : Faker<Product>
     public ProductFaker()
     {
         RuleFor(p => p.Name, f => f.Commerce.ProductName());
-        RuleFor(p => p.Price, f => f.Random.Decimal(1, 100));
-        RuleFor(p => p.DiscountedPrice, (f, p) => f.Random.Decimal(0, p.Price));
+        RuleFor(p => p.Price, f => Math.Round( f.Random.Decimal(1, 100), 2));
+        RuleFor(p => p.DiscountedPrice, (f, p) => Math.Round( f.Random.Decimal(0, p.Price), 2));
     }
 }

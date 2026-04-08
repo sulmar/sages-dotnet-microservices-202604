@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/order.schema.json",
+  "title": "Order",
+  "description": "An order from Shopper's catalog",
+  "type": "object",
+  "properties": {
+    "productId": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "quantity": {
+      "description": "Qty of the product",
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "price": {
+      "description": "The price of the product",
+      "type": "number",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [ "productId", "quantity", "price" ]
+}
+

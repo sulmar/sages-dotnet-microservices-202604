@@ -7,3 +7,12 @@ public class Product
     public decimal Price { get; set; }
     public decimal? DiscountedPrice { get; set; }    
 }
+
+
+public class CartItem
+{
+    public int ProductId { get; set; }
+    public int Quantity { get; set; }
+
+}
+

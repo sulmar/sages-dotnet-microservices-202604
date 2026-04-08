@@ -20,4 +20,23 @@ public class RedisCartItemRepository(IConnectionMultiplexer connection): ICartIt
         // EXPIRE cart:{session:id} 120
         await db.KeyExpireAsync(key, TimeSpan.FromMinutes(2));
     }
+
+    public async Task<IEnumerable<CartItem>> GetItemsAsync(string SessionId)
+    {
+        var key = $"cart:{SessionId}";
+
+        var db = connection.GetDatabase();
+
+        // HGETALL cart:user:1 
+        var entries = await db.HashGetAllAsync(key);
+
+        // Mapowanie wyników do listy CartItem
+        var cartItems = entries.Select(entry => new CartItem
+        {
+            ProductId = int.Parse(entry.Name.ToString().Split(':')[1]),
+            Quantity = (int)entry.Value
+        });
+
+        return cartItems;
+    }
 }

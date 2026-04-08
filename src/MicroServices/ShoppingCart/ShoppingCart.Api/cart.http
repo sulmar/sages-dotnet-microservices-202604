@@ -8,3 +8,11 @@ Content-Type: application/json
   "name": "Myszka",
   "price": 100
 }
+
+###
+
+POST https://localhost:7286/api/cart/checkout HTTP/1.1
+
+
+
+

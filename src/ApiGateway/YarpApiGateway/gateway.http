@@ -1,0 +1,2 @@
+GET https://localhost:7000/test HTTP/1.1
+X-Secret-Key: your-secret-key

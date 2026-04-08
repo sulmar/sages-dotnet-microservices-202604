@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/ApiGateway/">
+    <Project Path="ApiGateway/YarpApiGateway/YarpApiGateway.csproj" />
+  </Folder>
   <Folder Name="/Clients/" />
   <Folder Name="/Clients/Blazor.Client/">
     <Project Path="Clients/Blazor.Client/BlazorApp.csproj" />

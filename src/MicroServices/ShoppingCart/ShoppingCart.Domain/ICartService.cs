@@ -32,6 +32,8 @@ public class CartService(ICartItemRepository repository, IHttpClientFactory fact
             }).ToList(),            
         };
 
+        // https://json-schema.org/learn/getting-started-step-by-step
+
         var http = factory.CreateClient("OrderingApi");
 
         // 3. Wyślij zamówienie do systemu zamówień (np. poprzez RabbitMQ)

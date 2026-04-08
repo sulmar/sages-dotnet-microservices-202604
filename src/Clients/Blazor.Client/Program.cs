@@ -12,7 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 // dotnet add package Microsoft.Extensions.Http
-builder.Services.AddHttpClient<IProductService, ApiProductService>(client => client.BaseAddress = new Uri("https://localhost:7126"));
-builder.Services.AddHttpClient<ICartService, ApiCartService>(client => client.BaseAddress = new Uri("https://localhost:7286"));
+builder.Services.AddHttpClient<IProductService, ApiProductService>(client => client.BaseAddress = new Uri("https://localhost:7000"));
+builder.Services.AddHttpClient<ICartService, ApiCartService>(client => client.BaseAddress = new Uri("https://localhost:7000"));
 
 await builder.Build().RunAsync();

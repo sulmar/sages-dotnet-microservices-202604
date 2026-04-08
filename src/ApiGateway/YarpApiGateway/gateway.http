@@ -1,2 +1,27 @@
 GET https://localhost:7000/test HTTP/1.1
 X-Secret-Key: your-secret-key
+
+### Nieprawidlowy klucz
+
+GET https://localhost:7000/test HTTP/1.1
+X-Secret-Key: your-secret-key
+
+### Pusty klucz
+
+GET https://localhost:7000/test HTTP/1.1
+
+###
+
+GET https://localhost:7000/api/products HTTP/1.1
+
+###
+
+
+POST https://localhost:7000/api/cart/items HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Myszka",
+  "price": 100
+}

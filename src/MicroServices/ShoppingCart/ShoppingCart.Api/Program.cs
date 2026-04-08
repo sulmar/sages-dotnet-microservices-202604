@@ -7,16 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("localhost:6379"));
 builder.Services.AddScoped<ICartItemRepository, RedisCartItemRepository>();
 
-builder.Services.AddCors(options => options.AddPolicy("CartPolicy", policy =>
-{
-    policy.WithOrigins("https://localhost:7108");
-    policy.WithMethods("GET");
-    policy.AllowAnyHeader();
-}));
-
 var app = builder.Build();
 
-app.UseCors("CartPolicy");
 
 app.MapGet("/", () => "Hello Shopping Cart Api!");
 

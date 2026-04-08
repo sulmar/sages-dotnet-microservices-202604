@@ -1,8 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// dotnet add package Microsoft.Extensions.ServiceDiscovery
+builder.Services.AddServiceDiscovery();
+
 // dotnet add package Yarp.ReverseProxy
+
+// dotnet add package Microsoft.Extensions.ServiceDiscovery.Yarp
+
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
+    .AddServiceDiscoveryDestinationResolver();
 
 builder.Services.AddAuthentication("Bearer");
 

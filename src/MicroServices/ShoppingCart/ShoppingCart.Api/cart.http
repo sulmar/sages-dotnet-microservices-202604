@@ -1,6 +1,6 @@
 
 
-POST https://localhost:7286/api/cart/items HTTP/1.1
+POST https://localhost:7000/api/cart/items HTTP/1.1
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-POST https://localhost:7286/api/cart/checkout HTTP/1.1
+POST https://localhost:7000/api/cart/checkout HTTP/1.1
 
 
 

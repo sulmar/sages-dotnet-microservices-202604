@@ -10,6 +10,13 @@ Do rozpoczęcia tego kursu potrzebujesz następujących rzeczy:
 1. [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 2. [Docker](https://www.docker.com/products/docker-desktop/)
 
+## Stos technologiczny
+
+- .NET 10
+- ASP.NET Core Minimal API
+- Docker
+- Redis
+
 ## Przygotowanie
 
 Sklonuj repozytorium Git i przejdź do katalogu projektu:

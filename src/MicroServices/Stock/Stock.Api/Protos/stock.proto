@@ -6,6 +6,8 @@ package stock;
 
 service StockService {
   rpc CheckAvailability(CheckAvailabilityRequest) returns (CheckAvailabilityResponse);
+  rpc ReserveStock(ReserveStockRequest) returns (ReserveStockResponse);
+  rpc StreamStockUpdates(StockUpdateRequest) returns (stream StockUpdateResponse);
 }
 
 message CheckAvailabilityRequest {
@@ -15,4 +17,30 @@ message CheckAvailabilityRequest {
 
 message CheckAvailabilityResponse {
 	bool isAvailable = 1;
+}
+
+message ReserveStockRequest {
+	int32 productId = 1; 
+	int32 quantity = 2;	
+	int32 ttlSeconds = 3; // Time to live for the reservation in seconds
+}
+
+message ReserveStockResponse {
+	StockStatus status = 1;
+	optional string reason = 2;
+}
+
+enum StockStatus {
+	IN_STOCK = 0;
+	OUT_OF_STOCK = 1;
+	RESERVED = 2;
+}
+
+message StockUpdateRequest {
+
+}
+
+message StockUpdateResponse {
+	int32 productId = 1;
+	int32 availableQuantity = 2;
 }

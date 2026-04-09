@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Stock.Api";
+
+package stock;
+
+service StockService {
+  rpc StreamStockUpdates(StockUpdateRequest) returns (stream StockUpdateResponse);
+}
+
+
+message StockUpdateRequest {
+
+}
+
+message StockUpdateResponse {
+	int32 productId = 1;
+	int32 availableQuantity = 2;
+}

@@ -7,6 +7,9 @@
     <Project Path="Clients/Blazor.Client/BlazorApp.csproj" />
   </Folder>
   <Folder Name="/MicroServices/" />
+  <Folder Name="/MicroServices/DAshboard/">
+    <Project Path="MicroServices/DAshboard/Dashboard.Api/Dashboard.Api.csproj" />
+  </Folder>
   <Folder Name="/MicroServices/Ordering/">
     <Project Path="MicroServices/Ordering/Ordering.Api/Ordering.Api.csproj" />
     <Project Path="MicroServices/Ordering/Ordering.Domain/Ordering.Domain.csproj" />

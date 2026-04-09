@@ -21,6 +21,10 @@ cd src
 dotnet build
 ```
 
+## Przypadki użycia
+
+Lista przypadków użycia systemu: [docs/use-cases/README.md](docs/use-cases/README.md).
+
 ## Architektura
 
 Opis usług, komunikacja w systemie oraz diagram architektury: [docs/architecture.md](docs/architecture.md).

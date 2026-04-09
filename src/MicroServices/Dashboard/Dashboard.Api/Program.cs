@@ -1,4 +1,5 @@
 using Dashboard.Api.Workers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,15 @@ builder.Services.AddGrpcClient<Stock.Api.StockService.StockServiceClient>(option
 {
     options.Address = new Uri("https://localhost:7118");
 });
+
+// builder.Logging.AddJsonConsole();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Services.AddSerilog();
 
 var app = builder.Build();
 

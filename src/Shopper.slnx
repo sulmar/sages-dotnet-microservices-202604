@@ -22,4 +22,7 @@
     <Project Path="MicroServices/ShoppingCart/ShoppingCart.Domain/ShoppingCart.Domain.csproj" />
     <Project Path="MicroServices/ShoppingCart/ShoppingCart.Infrastructure/ShoppingCart.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/MicroServices/Stock/">
+    <Project Path="MicroServices/Stock/Stock.Api/Stock.Api.csproj" />
+  </Folder>
 </Solution>

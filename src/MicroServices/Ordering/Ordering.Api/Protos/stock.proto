@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Stock.Api";
+
+package stock;
+
+service StockService {
+  rpc CheckAvailability(CheckAvailabilityRequest) returns (CheckAvailabilityResponse);
+}
+
+message CheckAvailabilityRequest {
+	int32 productId = 1; 
+	int32 quantity = 2;	
+}
+
+message CheckAvailabilityResponse {
+	bool isAvailable = 1;
+}

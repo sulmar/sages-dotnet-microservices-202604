@@ -25,7 +25,9 @@ public class FakeTokenService : ITokenService
         var secretKey = "ThisIsASecretKeyForDemoPurposesOnly";
 
         var descriptor = new SecurityTokenDescriptor
-        {
+        {            
+            Issuer = "a",
+            Audience = "b",
             Claims = claims,
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)), SecurityAlgorithms.HmacSha256Signature)

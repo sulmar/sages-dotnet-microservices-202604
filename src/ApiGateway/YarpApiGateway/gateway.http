@@ -1,3 +1,5 @@
+@token ="your-secret-key"
+
 GET https://localhost:7000/test HTTP/1.1
 X-Secret-Key: your-secret-key
 
@@ -13,6 +15,7 @@ GET https://localhost:7000/test HTTP/1.1
 ###
 
 GET https://localhost:7000/api/products HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 

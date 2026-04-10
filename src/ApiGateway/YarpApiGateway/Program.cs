@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Yarp.ReverseProxy.Transforms;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // dotnet add package Microsoft.Extensions.ServiceDiscovery
@@ -9,9 +12,75 @@ builder.Services.AddServiceDiscovery();
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
-    .AddServiceDiscoveryDestinationResolver();
+    .AddServiceDiscoveryDestinationResolver()
+    .AddTransforms(builderContext =>
+    {
+        builderContext.AddRequestTransform(async transformContext =>
+        {
+            var context = transformContext.HttpContext;
 
-builder.Services.AddAuthentication("Bearer");
+            var token = context.Request.Cookies["access_token"];
+
+            if (!string.IsNullOrEmpty(token))
+            {
+
+                // Przykładowa transformacja: dodanie nagłówka do żądania
+                transformContext.ProxyRequest.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+              
+            }
+        });
+    });
+
+// dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+
+
+var secretKey = "ThisIsASecretKeyForDemoPurposesOnly";
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "a",
+            ValidateAudience = true,
+            ValidAudience = "b",
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey))
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine(context.Exception.Message);
+
+                return Task.CompletedTask;
+            }
+
+        };
+    });
+
+//builder.Services.AddAuthorization();
+
+// builder.Services.AddAuthentication("Bearer")
+   // .AddJwtBearer("Bearer");
+    //.AddJwtBearer(options =>
+    //{
+    //    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+    //    {            
+    //        OnMessageReceived = context =>
+    //        {
+    //            if (context.Request.Cookies.TryGetValue("access_token", out var token))
+    //            {
+    //                context.Token = token;
+    //            }
+    //            return Task.CompletedTask;
+    //        }
+    //    };
+    //});
 
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("LoggedPolicy", policy => policy.RequireAuthenticatedUser());

@@ -4,25 +4,52 @@
 
 <PageTitle>Stock</PageTitle>
 
-<p>Status: @_status</p>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <h2 class="h3 mb-3">Stock</h2>
+                <p class="text-muted mb-4">
+                    <span class="fw-semibold text-body">Status:</span>
+                    @_status
+                </p>
 
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in _stock)
-        {
-            <tr>
-                <td>@item.Key</td>
-                <td>@item.Value</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col" class="text-end">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (_stock.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="2" class="text-center text-muted py-4 border-0">No stock data yet.</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var item in _stock.OrderBy(static x => x.Key))
+                                        {
+                                            <tr>
+                                                <td>@item.Key</td>
+                                                <td class="text-end font-monospace">@item.Value</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @code {
 

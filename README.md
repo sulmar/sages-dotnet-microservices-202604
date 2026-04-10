@@ -88,3 +88,5 @@ Lista przypadków użycia systemu: [docs/use-cases/README.md](docs/use-cases/REA
 ## Architektura
 
 Opis usług, komunikacja w systemie oraz diagram architektury: [docs/architecture.md](docs/architecture.md).
+
+**Film:** [Why Monoliths Beat Microservices Almost Every Time](https://www.youtube.com/watch?v=5JWCttdfGjY)

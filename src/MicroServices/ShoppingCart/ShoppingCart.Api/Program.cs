@@ -19,11 +19,18 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello Shopping Cart Api!");
 
-app.MapPost("/api/cart/items", (Product product, ICartItemRepository repository, HttpContext context) =>
+app.MapPost("/api/cart/items", async (Product product, ICartItemRepository repository, HttpContext context) =>
 {    
     var sessionId = context.User.Claims.FirstOrDefault(c => c.Type == "SessionId")?.Value ?? "user:" + "1";
 
-    repository.AddAsync(sessionId, product);
+    await repository.AddAsync(sessionId, product);
+});
+
+app.MapGet("/api/cart/items", async (ICartItemRepository repository, HttpContext context) =>
+{
+    var sessionId = context.User.Claims.FirstOrDefault(c => c.Type == "SessionId")?.Value ?? "user:" + "1";
+    var items = await repository.GetItemsAsync(sessionId);
+    return Results.Ok(items);
 });
 
 app.MapPost("api/cart/checkout", async (ICartService cartService, HttpContext context) =>

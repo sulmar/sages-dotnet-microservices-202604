@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 
 namespace BlazorApp.Services;
 
@@ -15,10 +15,33 @@ public class ApiProductService(HttpClient _httpClient) : IProductService
 
 public interface ICartService
 {
-    Task AddToCartAsync(Model.Product product);        
+    event Action? CartChanged;
+
+    Task AddToCartAsync(Model.Product product);
+
+    Task<List<Model.CartItem>?> GetCartItemsAsync();
+
+    Task CheckoutAsync();
 }
 
 public class ApiCartService(HttpClient _httpClient) : ICartService
 {
-    public async Task AddToCartAsync(Model.Product product) => await _httpClient.PostAsJsonAsync("api/cart/items", product);
+    public event Action? CartChanged;
+
+    public async Task AddToCartAsync(Model.Product product)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/cart/items", product);
+        response.EnsureSuccessStatusCode();
+        CartChanged?.Invoke();
+    }
+
+    public async Task<List<Model.CartItem>?> GetCartItemsAsync() =>
+        await _httpClient.GetFromJsonAsync<List<Model.CartItem>>("api/cart/items");
+
+    public async Task CheckoutAsync()
+    {
+        var response = await _httpClient.PostAsync("api/cart/checkout", null);
+        response.EnsureSuccessStatusCode();
+        CartChanged?.Invoke();
+    }
 }

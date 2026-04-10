@@ -3,10 +3,14 @@ using StackExchange.Redis;
 
 namespace Ordering.Api;
 
-public class OrderProcessor(Stock.Api.StockService.StockServiceClient stockClient, IConnectionMultiplexer redis)
+public class OrderProcessor(Stock.Api.StockService.StockServiceClient stockClient, IConnectionMultiplexer redis, ILogger<OrderProcessor> logger)
 {
     public async Task ProcessAsync(Domain.Order order)
     {
+        logger.LogInformation("Processing order {OrderId} with {TotalAmount}...", order.Id, order.TotalAmount);
+
+        await Task.Delay(3000); // Simulate some processing time
+
         foreach (var item in order.Items)
         {
             var request = new Stock.Api.CheckAvailabilityRequest
@@ -42,5 +46,7 @@ public class OrderProcessor(Stock.Api.StockService.StockServiceClient stockClien
         new NameValueEntry("amount", order.TotalAmount.ToString()),
         new NameValueEntry("status", "pending")
         ]);
+
+        logger.LogInformation("Processed order {OrderId}.", order.Id);
     }
 }

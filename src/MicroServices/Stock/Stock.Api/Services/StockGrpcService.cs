@@ -8,7 +8,9 @@ public class StockGrpcService : StockService.StockServiceBase
     {
         { 1, 10 },
         { 2, 5  },
-        { 3, 1 }
+        { 3, 10 },
+        { 4, 10 },
+        { 5, 10 }
     };
 
     public override Task<CheckAvailabilityResponse> CheckAvailability(CheckAvailabilityRequest request, ServerCallContext context)

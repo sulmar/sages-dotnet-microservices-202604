@@ -72,6 +72,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("LoggedPolicy", policy => policy.RequireAuthenticatedUser());
+
+    // MVC: [Authorize(Roles= "manager")]
+    options.AddPolicy("ManagerPolicy", policy => policy.RequireRole("manager"));
 });
 
 var app = builder.Build();

@@ -15,7 +15,7 @@ builder.Services.AddReverseProxy()
     .AddServiceDiscoveryDestinationResolver()
     .AddTransforms(builderContext =>
     {
-        builderContext.AddRequestTransform(async transformContext =>
+        builderContext.AddRequestTransform(transformContext =>
         {
             var context = transformContext.HttpContext;
 
@@ -23,11 +23,10 @@ builder.Services.AddReverseProxy()
 
             if (!string.IsNullOrEmpty(token))
             {
-
-                // Przykładowa transformacja: dodanie nagłówka do żądania
                 transformContext.ProxyRequest.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-              
             }
+
+            return ValueTask.CompletedTask;
         });
     });
 
@@ -53,34 +52,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
         options.Events = new JwtBearerEvents
         {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.TryGetValue("access_token", out var token))
+                {
+                    context.Token = token;
+                }
+
+                return Task.CompletedTask;
+            },
             OnAuthenticationFailed = context =>
             {
                 Console.WriteLine(context.Exception.Message);
 
                 return Task.CompletedTask;
             }
-
         };
     });
-
-//builder.Services.AddAuthorization();
-
-// builder.Services.AddAuthentication("Bearer")
-   // .AddJwtBearer("Bearer");
-    //.AddJwtBearer(options =>
-    //{
-    //    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
-    //    {            
-    //        OnMessageReceived = context =>
-    //        {
-    //            if (context.Request.Cookies.TryGetValue("access_token", out var token))
-    //            {
-    //                context.Token = token;
-    //            }
-    //            return Task.CompletedTask;
-    //        }
-    //    };
-    //});
 
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("LoggedPolicy", policy => policy.RequireAuthenticatedUser());

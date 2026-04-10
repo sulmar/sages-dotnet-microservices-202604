@@ -2,7 +2,6 @@
 using Grpc.Core;
 using Microsoft.AspNetCore.SignalR;
 using Stock.Api;
-using System.Collections;
 
 namespace Dashboard.Api.Workers;
 
@@ -14,24 +13,37 @@ public class StockWorker(Stock.Api.StockService.StockServiceClient client,
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var call = client.StreamStockUpdates(new StockUpdateRequest(), cancellationToken: stoppingToken);
-
-            await foreach (var update in call.ResponseStream.ReadAllAsync(stoppingToken))
+            try
             {
-                // zla praktyka
-                // logger.LogInformation($"Product {update.ProductId} has {update.AvailableQuantity} items in stock.");
+                using var call = client.StreamStockUpdates(new StockUpdateRequest(), cancellationToken: stoppingToken);
 
-                // dobra praktyka
-                logger.LogInformation("Product {ProductId} has {AvailableQuantity} items in stock.", update.ProductId, update.AvailableQuantity);
-                
-                var stockUpdate = new
+                await foreach (var update in call.ResponseStream.ReadAllAsync(stoppingToken))
                 {
-                    ProductId = update.ProductId,
-                    Quantity = update.AvailableQuantity
-                };
+                    // zla praktyka
+                    // logger.LogInformation($"Product {update.ProductId} has {update.AvailableQuantity} items in stock.");
 
-                await hub.Clients.All.SendAsync("StockUpdate", stockUpdate);
+                    // dobra praktyka
+                    logger.LogInformation("Product {ProductId} has {AvailableQuantity} items in stock.", update.ProductId, update.AvailableQuantity);
 
+                    var stockUpdate = new
+                    {
+                        ProductId = update.ProductId,
+                        Quantity = update.AvailableQuantity
+                    };
+
+                    await hub.Clients.All.SendAsync("StockUpdate", stockUpdate);
+                }
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.Cancelled)
+            {
+                if (stoppingToken.IsCancellationRequested)
+                    break;
+
+                logger.LogDebug(ex, "Stock stream cancelled; reconnecting.");
             }
         }
     }

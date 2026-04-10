@@ -38,22 +38,27 @@ public class StockGrpcService : StockService.StockServiceBase
     public override async Task StreamStockUpdates(StockUpdateRequest request, IServerStreamWriter<StockUpdateResponse> responseStream, 
         ServerCallContext context)
     {
-        while(!context.CancellationToken.IsCancellationRequested)
+        try
         {
-            var update = new StockUpdateResponse
+            while (!context.CancellationToken.IsCancellationRequested)
             {
-                ProductId = Random.Shared.Next(1, 3),
-                AvailableQuantity = Random.Shared.Next(0, 10)
-            };
+                var update = new StockUpdateResponse
+                {
+                    ProductId = Random.Shared.Next(1, 3),
+                    AvailableQuantity = Random.Shared.Next(0, 10)
+                };
 
-            await responseStream.WriteAsync(update);
+                await responseStream.WriteAsync(update, context.CancellationToken);
 
-            Console.WriteLine($"Sent Product {update.ProductId} has {update.AvailableQuantity} items in stock.");
+                Console.WriteLine($"Sent Product {update.ProductId} has {update.AvailableQuantity} items in stock.");
 
-            // co 1 sekundę wysyłaj aktualizację
-            await Task.Delay(Random.Shared.Next(1000, 3000), context.CancellationToken);
+                // co 1 sekundę wysyłaj aktualizację
+                await Task.Delay(Random.Shared.Next(1000, 3000), context.CancellationToken);
+            }
         }
-
-        
+        catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
+        {
+            // normalne zakończenie strumienia (rozłączenie klienta / anulowanie)
+        }
     }
 }

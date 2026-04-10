@@ -11,11 +11,13 @@ builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
 builder.Services.AddSingleton<ProductCatalogContext>(sp => new ProductCatalogContext { Products = sp.GetRequiredService<Faker<Product>>().Generate(100) });
 
+
+/*
+
 // dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 
 var secretKey = "ThisIsASecretKeyForDemoPurposesOnly";
-
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -45,10 +47,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+*/
+
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 
 app.MapGet("/", () => "Hello Product Catalog Api!");
@@ -57,10 +61,10 @@ app.MapGet("/", () => "Hello Product Catalog Api!");
 
 app.MapGet("/api/products", async (IProductRepository repository, HttpContext context) =>
 {
-    if (!context.User.Identity.IsAuthenticated)
-    {
-        return Results.Unauthorized();
-    }
+    //if (!context.User.Identity.IsAuthenticated)
+    //{
+    //    return Results.Unauthorized();
+    //}
 
    return Results.Ok(repository.GetAll());
 });

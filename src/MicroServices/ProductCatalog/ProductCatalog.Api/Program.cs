@@ -57,7 +57,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello Product Catalog Api!");
 
-// MVC: [Authorize]
+
 
 app.MapGet("/api/products", async (IProductRepository repository, HttpContext context) =>
 {
@@ -66,7 +66,7 @@ app.MapGet("/api/products", async (IProductRepository repository, HttpContext co
     //    return Results.Unauthorized();
     //}
 
-   return Results.Ok(repository.GetAll());
-});
+    return Results.Ok(repository.GetAll());
+});// RequireAuthorization(policy=>policy.RequireRole("manager")); // MVC: [Authorize(Roles="manager"]
 
 app.Run();

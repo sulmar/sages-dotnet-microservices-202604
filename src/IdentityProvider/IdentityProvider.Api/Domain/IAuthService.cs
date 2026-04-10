@@ -18,6 +18,7 @@ public class UserIdentity
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string[] Roles { get; set; }
+    public string[] Permissions { get; set; }
 }
 
 

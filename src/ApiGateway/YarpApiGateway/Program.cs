@@ -75,6 +75,8 @@ builder.Services.AddAuthorization(options => {
 
     // MVC: [Authorize(Roles= "manager")]
     options.AddPolicy("ManagerPolicy", policy => policy.RequireRole("manager"));
+
+    options.AddPolicy("CreatorPolicy", policy => policy.RequireClaim("Permission", "create"));
 });
 
 var app = builder.Build();

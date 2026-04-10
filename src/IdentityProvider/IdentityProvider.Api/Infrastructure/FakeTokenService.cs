@@ -19,7 +19,8 @@ public class FakeTokenService : ITokenService
             { JwtRegisteredClaimNames.GivenName, identity.FirstName },
             { JwtRegisteredClaimNames.FamilyName, identity.LastName },
             { JwtRegisteredClaimNames.PhoneNumber, identity.Phone  },
-            { ClaimTypes.Role , identity.Roles }
+            { ClaimTypes.Role , identity.Roles },
+            { "Permission", identity.Permissions }
         };
 
         var secretKey = "ThisIsASecretKeyForDemoPurposesOnly";

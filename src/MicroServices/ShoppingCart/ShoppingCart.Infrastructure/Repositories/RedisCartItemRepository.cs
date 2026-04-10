@@ -21,6 +21,14 @@ public class RedisCartItemRepository(IConnectionMultiplexer connection): ICartIt
         await db.KeyExpireAsync(key, TimeSpan.FromMinutes(2));
     }
 
+    public async Task RemoveAsync(string SessionId, int productId)
+    {
+        var key = $"cart:{SessionId}";
+        var field = $"product:{productId}";
+        var db = connection.GetDatabase();
+        await db.HashDeleteAsync(key, field);
+    }
+
     public async Task<IEnumerable<CartItem>> GetItemsAsync(string SessionId)
     {
         var key = $"cart:{SessionId}";

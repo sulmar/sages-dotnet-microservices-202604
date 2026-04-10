@@ -33,6 +33,13 @@ app.MapGet("/api/cart/items", async (ICartItemRepository repository, HttpContext
     return Results.Ok(items);
 });
 
+app.MapDelete("/api/cart/items/{productId:int}", async (int productId, ICartItemRepository repository, HttpContext context) =>
+{
+    var sessionId = context.User.Claims.FirstOrDefault(c => c.Type == "SessionId")?.Value ?? "user:" + "1";
+    await repository.RemoveAsync(sessionId, productId);
+    return Results.NoContent();
+});
+
 app.MapPost("api/cart/checkout", async (ICartService cartService, HttpContext context) =>
 {
     var sessionId = context.User.Claims.FirstOrDefault(c => c.Type == "SessionId")?.Value ?? "user:" + "1";

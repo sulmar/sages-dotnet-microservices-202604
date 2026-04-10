@@ -19,6 +19,8 @@ public interface ICartService
 
     Task AddToCartAsync(Model.Product product);
 
+    Task RemoveFromCartAsync(int productId);
+
     Task<List<Model.CartItem>?> GetCartItemsAsync();
 
     Task CheckoutAsync();
@@ -31,6 +33,13 @@ public class ApiCartService(HttpClient _httpClient) : ICartService
     public async Task AddToCartAsync(Model.Product product)
     {
         var response = await _httpClient.PostAsJsonAsync("api/cart/items", product);
+        response.EnsureSuccessStatusCode();
+        CartChanged?.Invoke();
+    }
+
+    public async Task RemoveFromCartAsync(int productId)
+    {
+        var response = await _httpClient.DeleteAsync($"api/cart/items/{productId}");
         response.EnsureSuccessStatusCode();
         CartChanged?.Invoke();
     }

@@ -11,6 +11,8 @@ builder.Services.AddGrpcClient<Stock.Api.StockService.StockServiceClient>(option
     options.Address = new Uri("https://localhost:7118");
 });
 
+builder.Services.AddSignalR();
+
 // builder.Logging.AddJsonConsole();
 
 Log.Logger = new LoggerConfiguration()
@@ -23,5 +25,7 @@ builder.Services.AddSerilog();
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello Dashboard!");
+
+app.MapHub<Dashboard.Api.Hubs.StockHub>("/signalr/stock");
 
 app.Run();

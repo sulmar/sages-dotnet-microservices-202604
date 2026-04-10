@@ -6,6 +6,9 @@
   <Folder Name="/Clients/Blazor.Client/">
     <Project Path="Clients/Blazor.Client/BlazorApp.csproj" />
   </Folder>
+  <Folder Name="/IdentityProvider/">
+    <Project Path="IdentityProvider/IdentityProvider.Api/IdentityProvider.Api.csproj" />
+  </Folder>
   <Folder Name="/MicroServices/" />
   <Folder Name="/MicroServices/DAshboard/">
     <Project Path="MicroServices/DAshboard/Dashboard.Api/Dashboard.Api.csproj" />

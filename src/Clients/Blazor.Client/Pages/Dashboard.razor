@@ -1,12 +1,8 @@
 ﻿@page "/dashboard"
 @using BlazorApp.Components
-@using Microsoft.AspNetCore.SignalR.Client
 
 
 <PageTitle>Dashboard</PageTitle>
-
-
-@statusMessage
 
 <!-- Section-->
 <section class="py-5">
@@ -21,36 +17,3 @@
         </div>
     </div>
 </section>
-
-
-
-@code {
-
-    private HubConnection connection;
-
-
-    private string statusMessage = "Connecting to SignalR hub...";
-
-    // dotnet add package Microsoft.AspNetCore.SignalR.Client
-    protected override async Task OnInitializedAsync()
-    {
-        connection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7000/signalr/stock")
-            .WithAutomaticReconnect()
-            .Build();
-
-        connection.On<StockUpdate>("StockUpdate", (message) =>
-        {            
-            statusMessage = $"Received stock update: {message.productId} {message.quantity}";
-            InvokeAsync(StateHasChanged);
-        });
-
-        await connection.StartAsync();
-
-        statusMessage = "Connected to SignalR hub.";
-
-    }
-
-    record StockUpdate(int productId, int quantity);
-
-}

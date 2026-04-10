@@ -31,7 +31,7 @@ public class StockWorker(Stock.Api.StockService.StockServiceClient client,
                         Quantity = update.AvailableQuantity
                     };
 
-                    await hub.Clients.All.SendAsync("StockUpdate", stockUpdate);
+                    await hub.Clients.All.SendAsync("StockUpdated", stockUpdate);
                 }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)

@@ -1,0 +1,52 @@
+@page "/stock"
+@using Microsoft.AspNetCore.SignalR.Client
+@using BlazorApp.Model
+
+<PageTitle>Stock</PageTitle>
+
+<p>Status: @_status</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _stock)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    private HubConnection _connection = default!;
+    private string _status = "Connecting to SignalR hub...";
+    private Dictionary<int, int> _stock = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _connection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7000/signalr/stock")
+            .WithAutomaticReconnect()
+            .Build();
+
+        _connection.On<StockUpdateDto>("StockUpdated", update =>
+        {
+            _stock[update.ProductId] = update.Quantity;
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await _connection.StartAsync();
+
+        _status = "Connected to SignalR hub.";
+    }
+
+}

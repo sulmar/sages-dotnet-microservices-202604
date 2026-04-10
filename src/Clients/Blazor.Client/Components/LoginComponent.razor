@@ -1,5 +1,6 @@
 ﻿@using BlazorApp.Model
 @inject HttpClient Http
+@inject NavigationManager Navigation
 
 <form class="d-flex align-items-center m-3" @onsubmit="HandleLogin">
     <div class="me-2">
@@ -32,7 +33,8 @@
             string token = await response.Content.ReadAsStringAsync();
 
             Console.WriteLine(token);
-            // Handle successful login, e.g., navigate to another page
+            // Pełne przeładowanie strony, żeby przeglądarka uwzględniła ciasteczko sesji (np. access_token z IdentityProvider).
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
         }
         else
         {
